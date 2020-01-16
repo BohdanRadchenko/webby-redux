@@ -16,8 +16,6 @@ const SearchPage = ({loading, films, advancedSearch}) => {
     setSub(false)
   }
 
-  // const searchFilm = searchFilmsByForm(films, form);
-
   const submitHandler = (e) => {
     e.preventDefault()
     setSearchFilm(searchFilmsByForm(films, form));
@@ -30,8 +28,6 @@ const SearchPage = ({loading, films, advancedSearch}) => {
     }
     submitHandler(e)
   }
-  console.log(form)
-  console.log(sub)
 
   if (loading) {
     return <Loader/>
