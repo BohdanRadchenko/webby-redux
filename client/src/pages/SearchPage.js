@@ -8,16 +8,19 @@ import * as filmsActions from "../redux/films/filmsActions";
 
 const SearchPage = ({loading, films, advancedSearch}) => {
   const [form, setForm] = useState({})
+  const [searchFilm, setSearchFilm] = useState([])
   const [sub, setSub] = useState(false)
 
   const changeHandler = e => {
     setForm({...form, [e.target.name]: e.target.value})
+    setSub(false)
   }
 
-  const searchFilm = searchFilmsByForm(films, form);
+  // const searchFilm = searchFilmsByForm(films, form);
 
   const submitHandler = (e) => {
     e.preventDefault()
+    setSearchFilm(searchFilmsByForm(films, form));
     setSub(true)
   }
 
@@ -27,11 +30,13 @@ const SearchPage = ({loading, films, advancedSearch}) => {
     }
     submitHandler(e)
   }
-
+  console.log(form)
+  console.log(sub)
 
   if (loading) {
     return <Loader/>
   }
+
 
   return (
     <>
@@ -55,7 +60,7 @@ const SearchPage = ({loading, films, advancedSearch}) => {
         </form>
       </div>
 
-      {!!searchFilm.length   &&
+      {searchFilm.length !== 0 && (form.name || form.stars) &&
       <FilmsList items={searchFilm}/>
       }
 

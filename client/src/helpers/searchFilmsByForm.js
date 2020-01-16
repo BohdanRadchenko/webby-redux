@@ -12,4 +12,4 @@ export const searchFilmsByForm = (array, form) => {
     return array.filter(el => el.stars.toString().toLowerCase().includes(valueStars.toLowerCase().trim()))
   }
   return array
-}
+};
