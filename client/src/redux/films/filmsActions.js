@@ -120,5 +120,3 @@ export const advancedSearch = form  => ({
   type: ActionType.ADVANCED_SEARCH,
   payload: form
 });
-
-

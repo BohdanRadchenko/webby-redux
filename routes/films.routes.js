@@ -3,7 +3,19 @@ const config = require("config");
 const router = Router();
 const Film = require("../models/Film");
 
-// get /api/films    // GET ALL FILMS
+// get /api/films   // GET ALL FILMS
+router.get("/films", async (req, res) => {
+  try {
+    const films = await Film.find();
+    console.info('get all flms');
+    res.json(films);
+  } catch (e) {
+    res.status(500).json({message: "Something worn wrong, try again"});
+  }
+});
+
+
+// get /api/films/page=1   // GET ALL FILMS
 router.get("/films/page=:page", async (req, res) => {
   try {
     const perPage = config.PER_PAGE;
@@ -54,7 +66,7 @@ router.get("/films/page=:page", async (req, res) => {
   }
 });
 
-// get /api/films:id    // GET ONE FILMS BY ID
+// get /api/film:id    // GET ONE FILMS BY ID
 router.get("/film/:id", async (req, res) => {
   try {
     const film = await Film.findById(req.params.id);

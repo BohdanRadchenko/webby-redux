@@ -24,7 +24,7 @@ const SearchBar = ({getSearch, searchValue}) => {
 };
 
 const mapStateToProps = state => ({
-  searchValue : filmsSelectors.onSearchtitle(state)
+  searchValue : filmsSelectors.getSearchTitle(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

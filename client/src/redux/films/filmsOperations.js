@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   paginationCount,
- fetchFilmsRequest,
+  fetchFilmsRequest,
   fetchFilmsSuccess,
   fetchFilmsError,
   fetchFilmsByIdRequest,
@@ -16,28 +16,28 @@ import {
 } from './filmsActions';
 
 export const fetchFilmById = (id) => dispatch => {
-    dispatch(fetchFilmsByIdRequest());
-    axios
-      .get(`http://localhost:5000/api/film/${id}`)
-      .then(response => {
-        dispatch(fetchFilmsByIdSuccess(response.data));
-      })
-      .catch(error => {
-        dispatch(fetchFilmsByIdError(error));
-      });
-  };
+  dispatch(fetchFilmsByIdRequest());
+  axios
+    .get(`http://localhost:5000/api/film/${id}`)
+    .then(response => {
+      dispatch(fetchFilmsByIdSuccess(response.data));
+    })
+    .catch(error => {
+      dispatch(fetchFilmsByIdError(error));
+    });
+};
 
 export const fetchFilms = (page) => dispatch => {
- dispatch(fetchFilmsRequest());
- axios
-   .get(`http://localhost:5000/api/films/page=${page}`)
-   .then(response => {
-    dispatch(fetchFilmsSuccess(response.data.items));
-    dispatch(paginationCount(response.data.count));
-   })
-   .catch(error => {
-    dispatch(fetchFilmsError(error));
-   });
+  dispatch(fetchFilmsRequest());
+  axios
+    .get(`http://localhost:5000/api/films/page=${page}`)
+    .then(response => {
+      dispatch(fetchFilmsSuccess(response.data.items));
+      dispatch(paginationCount(response.data.count));
+    })
+    .catch(error => {
+      dispatch(fetchFilmsError(error));
+    });
 };
 
 export const deleteFilm = id => dispatch => {

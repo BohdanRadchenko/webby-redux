@@ -14,7 +14,7 @@ const SearchPage = ({loading, films, advancedSearch}) => {
   const changeHandler = e => {
     setForm({...form, [e.target.name]: e.target.value})
     setSub(false)
-  }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault()

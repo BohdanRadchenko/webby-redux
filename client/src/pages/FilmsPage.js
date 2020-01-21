@@ -48,7 +48,7 @@ const FilmsPage = ({loading, films, method, allFilms, paginationPage, match}) =>
         </div>
       )}
 
-    <PaginationBar />
+      <PaginationBar />
 
     </div>
 
