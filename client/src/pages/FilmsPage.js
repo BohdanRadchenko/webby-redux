@@ -1,5 +1,5 @@
-import React from "react";
-import {Link} from 'react-router-dom';
+import React, {useEffect} from "react";
+import {Link, withRouter} from 'react-router-dom';
 import {sortFilmsByMethod} from "../helpers/sortFilmsByMethod";
 import {connect} from 'react-redux'
 import SearchBar from "../components/SearchBar";
@@ -7,12 +7,16 @@ import SortCard from '../components/SortCard'
 import {FilmsList} from "../components/FilmsList";
 import {Loader} from '../components/Loader'
 import * as filmsSelectors from '../redux/films/filmsSelectors'
+import * as filmsAction from '../redux/films/filmsActions'
 import PaginationBar from "../components/PaginationBar";
 
 
-const FilmsPage = ({loading, films, method, allFilms}) => {
-
+const FilmsPage = ({loading, films, method, allFilms, paginationPage, match}) => {
   const sortFilms = sortFilmsByMethod(films, method);
+  const currentPage = match.params.page;
+  useEffect(() => {
+    paginationPage(currentPage)
+  });
 
   if (loading) {
     return <Loader/>
@@ -58,4 +62,8 @@ const mapStateToProps = state => ({
   loading: filmsSelectors.getLoading(state)
 })
 
-export default connect(mapStateToProps)(FilmsPage)
+const mapDispatchToProps = {
+  paginationPage : filmsAction.paginationPage
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FilmsPage))

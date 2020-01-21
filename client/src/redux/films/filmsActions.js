@@ -2,12 +2,12 @@ import {ActionType} from './actionType'
 
 
 // PAGINATION
-export const getPaginationPage = (page) => ({
+export const paginationPage = (page) => ({
   type: ActionType.PAGINATION_PAGE,
   payload : page
 });
 
-export const getPaginationCount = (count) => ({
+export const paginationCount = (count) => ({
   type: ActionType.PAGINATION_COUNT,
   payload : count
 });

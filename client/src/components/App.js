@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
+
 import {connect} from 'react-redux'
 import * as filmsOperations from '../redux/films/filmsOperations'
-import * as filmsSelectors from '../redux/films/filmsSelectors'
+import * as filmsSelectors from "../redux/films/filmsSelectors";
+
+
+
 import {BrowserRouter as Router} from 'react-router-dom'
 import {useRoutes} from "../routes";
 import {Navbar} from "./Navbar";
@@ -11,7 +15,11 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchFilms(this.props.page);
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.page !== this.props.page) {
+    this.props.fetchFilms(this.props.page)
+    }
+  }
 
   render() {
     const routes = useRoutes();

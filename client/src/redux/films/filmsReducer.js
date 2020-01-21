@@ -81,7 +81,7 @@ const searchMethodReducer = (state = 'title', { type, payload }) => {
   }
 };
 
-const getPaginationPage = (state = 1, { type, payload }) => {
+const setPaginationPage = (state = 1, { type, payload }) => {
   switch (type) {
     case ActionType.PAGINATION_PAGE:
       return payload;
@@ -90,7 +90,7 @@ const getPaginationPage = (state = 1, { type, payload }) => {
   }
 };
 
-const getPaginationCount = (state = 0, { type, payload }) => {
+const setPaginationCount = (state = 0, { type, payload }) => {
   switch (type) {
     case ActionType.PAGINATION_COUNT:
       return payload;
@@ -101,8 +101,8 @@ const getPaginationCount = (state = 0, { type, payload }) => {
 
 const pagination = combineReducers(
   {
-    paginationPage: getPaginationPage,
-    paginationCount: getPaginationCount,
+    paginationPage: setPaginationPage,
+    paginationCount: setPaginationCount,
   }
 );
 

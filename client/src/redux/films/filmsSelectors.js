@@ -19,4 +19,3 @@ export const getSearchFilms = (state) => {
   const value = onSearchtitle(state);
   return findFilmsByTitle(items, value);
 };
-

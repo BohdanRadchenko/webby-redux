@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  getPaginationCount,
+  paginationCount,
  fetchFilmsRequest,
   fetchFilmsSuccess,
   fetchFilmsError,
@@ -18,7 +18,7 @@ import {
 export const fetchFilmById = (id) => dispatch => {
     dispatch(fetchFilmsByIdRequest());
     axios
-      .get(`http://localhost:5000/api/films/${id}`)
+      .get(`http://localhost:5000/api/film/${id}`)
       .then(response => {
         dispatch(fetchFilmsByIdSuccess(response.data));
       })
@@ -30,10 +30,10 @@ export const fetchFilmById = (id) => dispatch => {
 export const fetchFilms = (page) => dispatch => {
  dispatch(fetchFilmsRequest());
  axios
-   .get(`http://localhost:5000/api/films/${page}`)
+   .get(`http://localhost:5000/api/films/page=${page}`)
    .then(response => {
     dispatch(fetchFilmsSuccess(response.data.items));
-    dispatch(getPaginationCount(response.data.count))
+    dispatch(paginationCount(response.data.count));
    })
    .catch(error => {
     dispatch(fetchFilmsError(error));

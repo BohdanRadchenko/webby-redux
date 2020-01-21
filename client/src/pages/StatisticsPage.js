@@ -9,7 +9,7 @@ const StatisticsPage = ({loading, films, onDeleteFilm}) => {
 
   const deleteAll = () => {
     films.map(el => {
-      onDeleteFilm(el._id)
+      return onDeleteFilm(el._id)
     })
   };
 

@@ -4,7 +4,7 @@ const router = Router();
 const Film = require("../models/Film");
 
 // get /api/films    // GET ALL FILMS
-router.get("/films/:page", async (req, res) => {
+router.get("/films/page=:page", async (req, res) => {
   try {
     const perPage = config.PER_PAGE;
     const page = req.params.page || 1;
@@ -29,10 +29,8 @@ router.get("/films/:page", async (req, res) => {
       res.status(200).json({
         items : result.itemsList,
         count : result.paginator.pageCount,
-        currentPage : result.paginator.currentPage,
       })
     });
-
 
     //work
     // Film.find({})
@@ -57,10 +55,11 @@ router.get("/films/:page", async (req, res) => {
 });
 
 // get /api/films:id    // GET ONE FILMS BY ID
-router.get("/films/:id", async (req, res) => {
+router.get("/film/:id", async (req, res) => {
   try {
     const film = await Film.findById(req.params.id);
     console.info('get film by id');
+
     res.json(film);
   } catch (e) {
     res.status(500).json({message: "Something worn wrong, try again"});

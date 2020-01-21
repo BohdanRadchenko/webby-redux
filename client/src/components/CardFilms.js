@@ -9,7 +9,7 @@ export const CardFilms = ({name, _id}) => {
             <span className="card-title">{name}</span>
           </div>
           <div className="card-action">
-            <NavLink to={`/films/${_id}`}  className="btn yellow darken-4">More...</NavLink>
+            <NavLink to={`/film/${_id}`}  className="btn yellow darken-4">More...</NavLink>
           </div>
             <div className="card-action">
             </div>

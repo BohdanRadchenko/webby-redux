@@ -1,25 +1,24 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link, useHistory} from 'react-router-dom'
+import React from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {Loader} from "./Loader";
-
 import * as filmsSelectors from "../redux/films/filmsSelectors";
 import * as filmsOperations from "../redux/films/filmsOperations";
 
-const DetailFilms = ({loading, films, onDeleteFilm, pathId}) => {
-  const history = useHistory();
+const DetailFilms = ({loading, films, onDeleteFilm, pathId, backHistory, pushHistory}) => {
+
   const handlerBack = () => {
-    history.goBack()
+    backHistory()
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Do you really want to delete this film")) {
+      onDeleteFilm(id);
+      pushHistory('/films/')
+    }
   };
 
   const film = films.filter(el => el._id === pathId)[0];
-
-  const handleDelete = (id) => {
-    if(window.confirm("Do you really want to delete this film")) {
-      onDeleteFilm(id);
-      history.push('/')
-    }
-  };
 
   if (loading) {
     return <Loader/>
