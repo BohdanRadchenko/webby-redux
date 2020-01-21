@@ -5,8 +5,11 @@ export const sortFilmsByMethod = (arr, method) => {
       return arr
     }
     if (method === 'release') {
+      if (arr.name){
       arr.sort((a, b) => a.name && b.name ? b.release.localeCompare(a.release) : null)
-      return arr
+      return arr;
+      }
+      return arr;
     }
     return arr
   }

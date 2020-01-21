@@ -13,7 +13,7 @@ export const useRoutes = () => {
     <div>
       <Switch>
 
-        <Route path="/films" exact>
+        <Route path="/films/1" >
           <FilmsPage/>
         </Route>
         <Route path="/films/:id">
@@ -31,7 +31,7 @@ export const useRoutes = () => {
         <Route path="/statistics" >
           <StatisticsPage />
         </Route>
-        <Redirect to="/films"/>
+        <Redirect to="/films/1"/>
       </Switch>
     </div>
   )

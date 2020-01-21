@@ -1,5 +1,9 @@
 import {findFilmsByTitle} from "../../helpers/findFilmsByTitle";
 
+export const getPaginationPage = state => state.films.pagination.paginationPage;
+
+export const getPaginationCount = state => state.films.pagination.paginationCount;
+
 export const getAllFilms = state => state.films.items;
 
 export const getLoading = state => state.films.loading;

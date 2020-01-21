@@ -15,8 +15,10 @@ const DetailFilms = ({loading, films, onDeleteFilm, pathId}) => {
   const film = films.filter(el => el._id === pathId)[0];
 
   const handleDelete = (id) => {
-    onDeleteFilm(id);
-    history.push('/')
+    if(window.confirm("Do you really want to delete this film")) {
+      onDeleteFilm(id);
+      history.push('/')
+    }
   };
 
   if (loading) {

@@ -7,6 +7,7 @@ import SortCard from '../components/SortCard'
 import {FilmsList} from "../components/FilmsList";
 import {Loader} from '../components/Loader'
 import * as filmsSelectors from '../redux/films/filmsSelectors'
+import PaginationBar from "../components/PaginationBar";
 
 
 const FilmsPage = ({loading, films, method, allFilms}) => {
@@ -42,7 +43,11 @@ const FilmsPage = ({loading, films, method, allFilms}) => {
           <h4 className='center-align'>No matching results!</h4>
         </div>
       )}
+
+    <PaginationBar />
+
     </div>
+
   )
 };
 

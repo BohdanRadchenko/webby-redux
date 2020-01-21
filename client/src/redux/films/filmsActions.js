@@ -1,5 +1,17 @@
 import {ActionType} from './actionType'
 
+
+// PAGINATION
+export const getPaginationPage = (page) => ({
+  type: ActionType.PAGINATION_PAGE,
+  payload : page
+});
+
+export const getPaginationCount = (count) => ({
+  type: ActionType.PAGINATION_COUNT,
+  payload : count
+});
+
 // FETCH FILM BY ID
 export const fetchFilmsByIdRequest = () => ({
   type: ActionType.FETCH_FILMS__BY_ID_REQUEST,

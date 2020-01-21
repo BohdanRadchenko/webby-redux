@@ -1,6 +1,6 @@
 ### Launch of the project
 1. Clone this repo 
-	`git clone https://github.com/BohdanRadchenko/webby-films.git` 
+	`git clone https://github.com/BohdanRadchenko/webby-redux.git` 
 2. Open project directory
 	`cd webby-films/`
 3. Install package for server

@@ -1,6 +1,13 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux'
+import * as filmsOperations from "../redux/films/filmsOperations";
 
-export const TableFilms = ({films}) => {
+ const TableFilms = ({films, onAddFilm}) => {
+
+   const addHandler = (el) => {
+     onAddFilm(el)
+   };
+
   return (
     <table>
       <thead>
@@ -10,6 +17,7 @@ export const TableFilms = ({films}) => {
         <th>Release Year</th>
         <th>Format</th>
         <th>Stars</th>
+        <th>Add</th>
       </tr>
       </thead>
       <tbody>
@@ -20,9 +28,21 @@ export const TableFilms = ({films}) => {
           <td>{el.release}</td>
           <td>{el.format}</td>
           <td>{el.stars}</td>
+          <td> <button
+            className="btn darken-4 right"
+            onClick={e => addHandler(el, i)}
+          >
+            Add
+          </button></td>
         </tr>
       ))}
       </tbody>
     </table>
   );
 };
+
+const mapDispatchToProps =  {
+  onAddFilm: filmsOperations.addFilm,
+}
+
+export default connect(null, mapDispatchToProps)(TableFilms)

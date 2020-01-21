@@ -1,13 +1,56 @@
 const {Router} = require("express");
+const config = require("config");
 const router = Router();
 const Film = require("../models/Film");
 
 // get /api/films    // GET ALL FILMS
-router.get("/films", async (req, res) => {
+router.get("/films/:page", async (req, res) => {
   try {
-    const films = await Film.find();
+    const perPage = config.PER_PAGE;
+    const page = req.params.page || 1;
+
+    //mongoose pagination
+    const myCustomLabels = {
+      docs: 'itemsList',
+      totalDocs: 'itemCount',
+      page: 'currentPage',
+      totalPages: 'pageCount',
+      pagingCounter: 'slNo',
+      meta: 'paginator'
+    };
+
+    const options = {
+      page: page,
+      limit: perPage,
+      customLabels: myCustomLabels
+    };
+
+    Film.paginate({}, options, function(err, result) {
+      res.status(200).json({
+        items : result.itemsList,
+        count : result.paginator.pageCount,
+        currentPage : result.paginator.currentPage,
+      })
+    });
+
+
+    //work
+    // Film.find({})
+    //   .skip(perPage * page)
+    //   .limit(perPage)
+    //   .exec((err, films) => {
+    //     if (err) {
+    //       res.status(500).json(err);
+    //       return;
+    //     }
+    //     res.status(200).json(films)
+    //   });
+
+    //work!
+    // const films = await Film.find()
+
     console.info('get all flms')
-    res.json(films);
+    // res.json(films);
   } catch (e) {
     res.status(500).json({message: "Something worn wrong, try again"});
   }
@@ -37,7 +80,7 @@ router.post("/films", async (req, res) => {
 
     await film.save();
     console.info(`Create new film "${req.body.name}" `)
-    res.status(201).json(film).json({message: "Film is creating"});
+    res.status(201).json(film)
   } catch (e) {
     res.status(500).json({message: "Something worn wrong, try again"});
   }
@@ -62,7 +105,7 @@ router.get("/search?:query", async (req, res) => {
   try {
     const srt = req.query.stars
     const name = req.query.name
-    const films = await Film.find({name : name})
+    const films = await Film.find({name: name})
 
     console.info('find flms by query')
     res.json(films);

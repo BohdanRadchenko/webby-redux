@@ -2,12 +2,24 @@ import React, {useState} from "react";
 import {Link} from 'react-router-dom';
 import {handleFileSelect} from "../helpers/handleFileSelect";
 import {getArrayContents} from "../helpers/getArrayContents";
-import {TableFilms} from "../components/TableFilms";
+import TableFilms from "../components/TableFilms";
 import {connect} from 'react-redux';
 import * as filmsOperations from '../redux/films/filmsOperations'
 
 const UploadPage = ({uploadFilms}) => {
+  const [count, setCount] = useState(0)
+  const [uploadAll, setUploadAll] = useState(false);
   const [films, setFilms] = useState([])
+
+
+  const uploadFile = async (e) => {
+    e.persist();
+    const fileContents = await handleFileSelect(e);
+    const arrayContents = getArrayContents(fileContents);
+    createFilmFromArray(arrayContents);
+    setUploadAll(false);
+    setCount(0);
+  };
 
   const createFilmFromArray = (array) => {
     let arr = [];
@@ -19,21 +31,22 @@ const UploadPage = ({uploadFilms}) => {
         stars: el['Stars'],
       };
       arr = [...arr, createObj];
-      uploadFilms({...createObj})
-    })
+      return arr;
+    });
     setFilms(arr)
-  }
+  };
 
-  const uploadFile = async (e) => {
-    e.persist()
-    const fileContents = await handleFileSelect(e);
-    const arrayContents = getArrayContents(fileContents);
-    createFilmFromArray(arrayContents)
-  }
+  const uploadAllFilms = () => {
+  setCount(films.length);
+  films.map(el => uploadFilms({...el}));
+  setUploadAll(true);
+  setFilms([]);
+  };
 
 
   return (
     <div>
+
       <form action="#">
         <div className="file-field input-field">
           <div className="btn">
@@ -48,19 +61,36 @@ const UploadPage = ({uploadFilms}) => {
           </div>
         </div>
       </form>
+
       {!!films.length && (
         <div>
-          <h4 className='center-align'> You have uploaded {films.length} movies!
+          <p className='left'>Films : <strong> {films.length}</strong></p>
+          <button
+            className="btn darken-4 right"
+            onClick={uploadAllFilms}
+          >
+            Upload All Film
+          </button>
+        </div>
+      )}
+
+      {uploadAll && (
+        <div>
+          <h4 className='center-align'> You have uploaded {count} movies!
             <Link to={'/films'}> Films... </Link>
             or
             <Link to={'/statistics'}> Statistics... </Link>
           </h4>
-          <TableFilms films={films}/>
         </div>
       )}
+
+      {!uploadAll && !!films.length && (
+        <TableFilms films={films}/>
+      )}
+
     </div>
   )
-};
+}
 
 const mapDispatchToProps = {
   uploadFilms: filmsOperations.addFilm,

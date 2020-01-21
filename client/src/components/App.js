@@ -9,12 +9,12 @@ import 'materialize-css'
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchFilms();
+    this.props.fetchFilms(this.props.page);
   }
+
 
   render() {
     const routes = useRoutes();
-
     return(
       <Router>
         <div className="container">
@@ -28,6 +28,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
+  page : filmsSelectors.getPaginationPage(state),
   loading : filmsSelectors.getLoading(state)
 });
 

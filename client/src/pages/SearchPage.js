@@ -67,7 +67,7 @@ const SearchPage = ({loading, films, advancedSearch}) => {
       )}
     </>
   )
-}
+};
 
 const mapStateToProps = state => ({
   loading : filmsSelectors.getLoading(state),

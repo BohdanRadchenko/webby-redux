@@ -7,9 +7,11 @@ const itemsReducer = (state = [], { type, payload }) => {
       return payload.films;
 
     case ActionType.DELETE_FILM_SUCCESS:
+      window.M.toast({html: 'Successfully deleted'});
       return state.filter(item => item._id !== payload.id);
 
     case ActionType.ADD_FILM_SUCCESS:
+      window.M.toast({html: 'Film is creating'});
       return [...state, payload.film];
 
     default:
@@ -79,6 +81,31 @@ const searchMethodReducer = (state = 'title', { type, payload }) => {
   }
 };
 
+const getPaginationPage = (state = 1, { type, payload }) => {
+  switch (type) {
+    case ActionType.PAGINATION_PAGE:
+      return payload;
+    default:
+      return state;
+  }
+};
+
+const getPaginationCount = (state = 0, { type, payload }) => {
+  switch (type) {
+    case ActionType.PAGINATION_COUNT:
+      return payload;
+    default:
+      return state;
+  }
+};
+
+const pagination = combineReducers(
+  {
+    paginationPage: getPaginationPage,
+    paginationCount: getPaginationCount,
+  }
+);
+
 
 const searchReducers = combineReducers(
   {
@@ -86,12 +113,14 @@ const searchReducers = combineReducers(
     searchStars: searchStarsReducer,
     sortMethod: searchMethodReducer,
   }
-)
+);
+
 
 export default combineReducers({
   items: itemsReducer,
   loading: loadingReducer,
   error: errorReducer,
+  pagination : pagination,
   search : searchReducers,
 
 });

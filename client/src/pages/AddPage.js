@@ -1,27 +1,48 @@
 import React, {useState} from "react";
 import {connect} from 'react-redux'
 import {Loader} from "../components/Loader";
-import * as filmsOperations from '../redux/films/filmsOperations'
+import * as filmsSelectors from '../redux/films/filmsSelectors';
+import * as filmsOperations from '../redux/films/filmsOperations';
+import Format from "../components/Select";
+import {uniqueStars} from '../helpers/uniqueStars';
+import {uniqueFilms} from "../helpers/uniqueFilms";
 
-const AddPage = ({loading, onSubmit}) => {
+const AddPage = ({loading, onSubmit, films}) => {
   const [form, setForm] = useState({
     name: '', release: '', format: '', stars: ''
-  })
-
+  });
 
   const changeHandler = e => {
     setForm({...form, [e.target.name]: e.target.value})
   };
 
+  const getSelect = (select) => {
+    if(select.label !== form.format) {
+    setForm({...form, format : select.label});
+    }
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    if (!loading) {
+    const starsUnique = uniqueStars(form.stars);
+    const filmsUnique = uniqueFilms(form, films);
+
+    if(form.format === 'Format') {
+      alert('Choose format')
+    }
+    if(!starsUnique) {
+      alert('Stars must be unique')
+    }
+    if(!filmsUnique) {
+      alert('Such film is already exist');
+    }
+    if (!loading && starsUnique && filmsUnique) {
       onSubmit({...form});
     setForm({name: '', release: '', format: '', stars: ''})
     }
   };
 
-
+  console.log();
   if(loading) {
     return <Loader/>
   }
@@ -39,15 +60,13 @@ const AddPage = ({loading, onSubmit}) => {
             </div>
 
             <div className="input-field col s3">
-              <input required id="release_data" type="text" name='release' value={form.release}
+              <input required id="release_data" type="number" min="1850" max="2020" name='release' value={form.release}
                      onChange={e => changeHandler(e)}/>
               <label htmlFor="release_data">Release Data </label>
             </div>
 
-            <div className="input-field col s3">
-              <input required id="films_format" type="text" name='format' value={form.format}
-                     onChange={e => changeHandler(e)}/>
-              <label htmlFor="films_format">Format</label>
+            <div className="input-field col s3 valign-wrapper">
+              <Format getSelect={getSelect}/>
             </div>
           </div>
 
@@ -69,11 +88,17 @@ const AddPage = ({loading, onSubmit}) => {
     </div>
   )
 };
+
+const mapStateToProps = state => ({
+  loading: filmsSelectors.getLoading(state),
+  films: filmsSelectors.getAllFilms(state)
+})
+
 const mapDispatchToProps = {
   onSubmit: filmsOperations.addFilm,
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(AddPage);
