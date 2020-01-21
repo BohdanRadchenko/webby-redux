@@ -1,38 +1,48 @@
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {searchFilmsByForm} from '../helpers/searchFilmsByForm'
 import {FilmsList} from "../components/FilmsList";
 import {Loader} from "../components/Loader";
-import {connect} from 'react-redux'
-import * as filmsSelectors from '../redux/films/filmsSelectors'
-import * as filmsActions from "../redux/films/filmsActions";
+import {useHttp} from "../hooks/http.hook";
 
-const SearchPage = ({loading, films, advancedSearch}) => {
+const SearchPage = () => {
+  const {loading, request} = useHttp()
   const [form, setForm] = useState({})
-  const [searchFilm, setSearchFilm] = useState([])
+  const [films, setFilms] = useState([])
+  const [searchFilms, setSearchFilms] = useState([])
   const [sub, setSub] = useState(false)
+
+  const fetchFilms = useCallback(async () => {
+    try {
+      const fetched = await request('/api/films', 'GET', null)
+      setFilms(fetched)
+    } catch (e) {
+    }
+  }, [request])
 
   const changeHandler = e => {
     setForm({...form, [e.target.name]: e.target.value})
-    setSub(false)
-  };
+  }
 
   const submitHandler = (e) => {
     e.preventDefault()
-    setSearchFilm(searchFilmsByForm(films, form));
+    setSearchFilms(searchFilmsByForm(films, form.name, form.stars ))
     setSub(true)
   }
 
   const pressHandler = (e) => {
     if (e.key !== 'Enter') {
-    return
+      return
     }
     submitHandler(e)
   }
 
+  useEffect(() => {
+    fetchFilms()
+  }, [fetchFilms])
+
   if (loading) {
     return <Loader/>
   }
-
 
   return (
     <>
@@ -56,27 +66,18 @@ const SearchPage = ({loading, films, advancedSearch}) => {
         </form>
       </div>
 
-      {searchFilm.length !== 0 && (form.name || form.stars) &&
-      <FilmsList items={searchFilm}/>
+      {searchFilms  &&
+      <FilmsList items={searchFilms}/>
       }
 
-      {searchFilm.length === 0 && sub && (
+      {searchFilms.length === 0 && sub && (
         <div >
           <h4 className='center-align'>No matching results!</h4>
         </div>
       )}
+
     </>
   )
 };
 
-const mapStateToProps = state => ({
-  loading : filmsSelectors.getLoading(state),
-  advancedSearch : filmsSelectors.getAdvancedSearch(state),
-  films : filmsSelectors.getAllFilms(state)
-})
-
-const mapDispatchToProps = {
-  advancedSearch: filmsActions.advancedSearch
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage)
+export default SearchPage
